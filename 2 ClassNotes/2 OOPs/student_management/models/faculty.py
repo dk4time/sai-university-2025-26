@@ -1,10 +1,12 @@
-# models/faculty.py
-from .person import Person
+from demo.models.person import Person
 
 class Faculty(Person):
-    def __init__(self, name, email, phone, emp_id, subject, designation, salary):
-        super().__init__(name, email, phone)
-        self.emp_id = emp_id
+    __code = 201
+
+    def __init__(self, name=None, email=None, phone=None, door_no=None, street=None, city=None, subject=None, designation=None, salary=0.0):
+        super().__init__(name, email, phone, door_no, street, city)
+        self.emp_id = name[:2].upper() + str(Faculty.__code)
+        Faculty.__code += 1
         self.subject = subject
         self.designation = designation
         self.salary = salary
@@ -14,7 +16,7 @@ class Faculty(Person):
         self.courses_taught.append(course)
 
     def calculate_bonus(self, percentage):
-        return (self.salary * percentage) / 100
+        return (percentage / 100) * self.salary
 
     def __str__(self):
-        return f"Faculty[{self.emp_id}] {self.name} - {self.designation} | {self.subject}"
+        return f"{super().__str__()} | EmpID: {self.emp_id} | {self.designation} | {self.subject}"

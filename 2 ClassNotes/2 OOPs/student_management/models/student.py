@@ -1,23 +1,24 @@
-# models/student.py
-from .person import Person
-from datetime import date
+from demo.models.person import Person
+from demo.models.enrollment import Enrollment
 
 class Student(Person):
-    def __init__(self, name, email, phone, student_id, department, year_of_study):
-        super().__init__(name, email, phone)
-        self.student_id = student_id
+    code = 1001
+
+    def __init__(self, name=None, email=None, phone=None, door_no=None, street=None, city=None, department=None, year_of_study=None):
+        super().__init__(name, email, phone, door_no, street, city)
+        self.student_id = name[:2].upper() + str(Student.code)
+        Student.code += 1
         self.department = department
         self.year_of_study = year_of_study
         self.enrollments = []
         self.cgpa = 0.0
         self.attendance = {}
-        self.date_joined = date.today()
+        self.account = None
 
-    # ---- Academic Behavior ----
     def enroll(self, course):
-        from .enrollment import Enrollment
         enrollment = Enrollment(self, course)
         self.enrollments.append(enrollment)
+        course.register_student(self)
         return enrollment
 
     def mark_attendance(self, course_code, present=True):
@@ -29,9 +30,8 @@ class Student(Person):
     def calculate_total_fee(self):
         return sum(e.course.fee for e in self.enrollments)
 
-    def display_enrollments(self):
-        for e in self.enrollments:
-            print(f"{e.course.course_code} - {e.course.course_name} ({'Paid' if e.payment_status else 'Pending'})")
+    def link_bank_account(self, account):
+        self.account = account
 
     def __str__(self):
-        return f"Student[{self.student_id}] {self.name} | Dept: {self.department} | CGPA: {self.cgpa}"
+        return f"{super().__str__()} | ID: {self.student_id} | Dept: {self.department.name if self.department else 'None'} | CGPA: {self.cgpa}"

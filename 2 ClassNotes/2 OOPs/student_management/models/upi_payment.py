@@ -1,8 +1,11 @@
-# models/upi_payment.py
-from .payment_gateway import PaymentGateway
+import uuid
+from demo.models.payment_gateway import PaymentGateway
 
 class UPIPayment(PaymentGateway):
+    def __init__(self):
+        self.transaction_id = None
+
     def process_payment(self, enrollment, amount):
-        print(f"🔹 [UPI] Processing ₹{amount} for {enrollment.student.name}...")
+        self.transaction_id = str(uuid.uuid4())[:8]
         enrollment.mark_paid()
-        print("✅ UPI Payment Successful!")
+        print(f"UPI Transaction Successful | ID: {self.transaction_id} | Amount: ₹{amount}")

@@ -1,4 +1,3 @@
-# models/payment_gateway.py
 from abc import ABC, abstractmethod
 
 class PaymentGateway(ABC):
