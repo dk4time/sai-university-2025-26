@@ -1,22 +1,23 @@
-class Counter:
-    count = 0
-    def __init__(self):
-        # self.count = 0
-        self.increment()
+import datetime
 
-    @classmethod
-    def increment(cls):
-        Counter.count += 1
+class AgeNotFound(Exception):
+    pass
 
-    @staticmethod
-    def show():
-        print(Counter.count)
+try:
+    nums = [1, 2]
+    quo = 5/3
+    print(nums[1])
+    print("quo:", quo)
+    age = 4
+    if age < 18:
+        raise AgeNotFound("not eligible error")
+except ArithmeticError as e:
+    print("Arithmeric:", e)
 
-c1 = Counter() #count = 0 (1)
-c2 = Counter() #count = 2
-c3 = Counter() #count = 3
+except Exception as e:
+    print(e)
 
-print(Counter.count)
-
-#instance(self) class(cls) static(util neither cls nor self)
-
+else:
+    print("No exception raised")
+finally:
+    print(datetime.datetime.now())
